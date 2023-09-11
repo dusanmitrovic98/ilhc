@@ -69,3 +69,4 @@ def chat():
             play_song_from_start()
         elif message == "/help":
             help()
+        elif message == "/pause":
