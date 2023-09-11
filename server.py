@@ -13,6 +13,7 @@ NAME_SERVER = "Server"
 music_folder = "music"  # Change this to the path of your music folder.
 
 chat_messages = []
+connected_users = []
 
 @app.route('/')
 def index():
@@ -38,6 +39,12 @@ def chat():
     if message:
         if message == "/clear":
             clear_chat(username)
+        elif message == "/start":
+            play_song_from_start()
+        elif message == "/pause":
+            song_pause()
+        elif message == "/resume":
+            song_resume()
         elif message == '/list':
             songs = os.listdir(music_folder)
             song_list = "\n".join([f"{i + 1}. {song} ❤️ " for i, song in enumerate(songs)])
@@ -80,6 +87,15 @@ def download_from_url(url):
     
 def server_response(response):
     socketio.emit("chat_message", {"username": NAME_SERVER, "message": response})
+
+def play_song_from_start():
+    socketio.emit("play_song_from_start")
+
+def song_pause():
+    socketio.emit("song_pause")
+
+def song_resume():
+    socketio.emit("song_resume")
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

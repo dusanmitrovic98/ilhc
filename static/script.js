@@ -146,6 +146,20 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.innerHTML = "";
   });
 
+  socket.on("play_song_from_start", () => {
+    audioPlayer.currentTime = 0;
+    audioPlayer.controls = true;
+    audioPlayer.autoplay = true;
+  });
+
+  socket.on("song_pause", () => {
+    audioPlayer.pause();
+  });
+
+  socket.on("song_resume", () => {
+    audioPlayer.play();
+  });
+
   // Simulate receiving a welcome message from the server (for demonstration)
   setTimeout(function () {
     displayMessage("Server", "Welcome to the chat!", "server-message");
