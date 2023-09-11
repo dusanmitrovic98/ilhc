@@ -52,3 +52,4 @@ def generate_audio(song_path):
             audio_chunk = audio_file.read(4096)
             if not audio_chunk:
                 break
+            yield audio_chunk
