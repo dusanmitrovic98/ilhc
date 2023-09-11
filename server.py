@@ -43,3 +43,4 @@ def connect_client(username):
 
 @app.route('/stream/<song>')
 def stream(song):
+    song_path = os.path.join(music_folder, song)
