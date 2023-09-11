@@ -27,3 +27,4 @@ def handle_connect():
 def handle_connect():
     global connected_clients
     connected_clients = []
+    socketio.emit("refresh_clients")
