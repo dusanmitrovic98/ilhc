@@ -71,3 +71,4 @@ def chat():
             help()
         elif message == "/pause":
             song_pause()
+        elif message == "/resume":
