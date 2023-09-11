@@ -46,3 +46,4 @@ def stream(song):
     song_path = os.path.join(music_folder, song)
     return Response(generate_audio(song_path), mimetype="audio/mpeg")
 
+def generate_audio(song_path):
