@@ -48,3 +48,4 @@ def stream(song):
 
 def generate_audio(song_path):
     with open(song_path, "rb") as audio_file:
+        while True:
