@@ -38,3 +38,4 @@ def connect_client(username):
     print(connected_clients[0])
     response_clients = ''
     for client in connected_clients:
+        response_clients += client + " ❤️ "
