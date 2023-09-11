@@ -79,8 +79,6 @@ def chat():
             song_resume()
         elif message == '/list':
             songs = os.listdir(music_folder)
-            # son
-            # g_list = "\n".join([f"{i + 1}. {song} ❤️ " for i, song in enumerate(songs)])
             i = 1
             for song in songs:
                 server_response(f"{i}. {song} ❤️ ")
