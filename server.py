@@ -66,3 +66,4 @@ def chat():
             connected_clients = []
             socketio.emit("refresh_clients")
         elif message == "/start":
+            play_song_from_start()
