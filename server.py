@@ -56,3 +56,4 @@ def generate_audio(song_path):
 
 @app.route('/chat', methods=['POST'])
 def chat():
+    username = request.form.get('message').split('|')[0]
