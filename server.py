@@ -63,3 +63,4 @@ def chat():
             clear_chat(username)
         elif message == "/online":
             global connected_clients
+            connected_clients = []
