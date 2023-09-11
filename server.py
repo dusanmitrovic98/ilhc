@@ -10,3 +10,4 @@ socketio = SocketIO(app)
 
 NAME_SERVER = "Server"
 
+music_folder = "music"
