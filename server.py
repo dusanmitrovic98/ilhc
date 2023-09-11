@@ -16,3 +16,4 @@ chat_messages = []
 connected_clients = []
 
 @app.route('/')
+def index():
