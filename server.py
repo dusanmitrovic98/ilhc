@@ -33,3 +33,4 @@ def handle_connect():
 @socketio.on("connect_client")
 def connect_client(username):
     global connected_clients
+    connected_clients.append(username)
