@@ -60,3 +60,4 @@ def chat():
     message = request.form.get('message').split('|')[1]
     if message:
         if message == "/clear":
+            clear_chat(username)
