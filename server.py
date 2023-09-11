@@ -78,3 +78,4 @@ def chat():
                 print(message)
                 song_number = int(message.split(' ')[1])
                 new_name = message.split(' ')[2]
+                songs = os.listdir(music_folder)
