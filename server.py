@@ -54,3 +54,4 @@ def generate_audio(song_path):
                 break
             yield audio_chunk
 
+@app.route('/chat', methods=['POST'])
