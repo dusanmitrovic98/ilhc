@@ -51,3 +51,4 @@ def generate_audio(song_path):
         while True:
             audio_chunk = audio_file.read(4096)
             if not audio_chunk:
+                break
