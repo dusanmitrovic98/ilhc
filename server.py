@@ -23,15 +23,14 @@ def index():
 def handle_connect():
     # This function will be called when a client connects.
     # You can add your logic here to handle the connection.
-    print("A client has connected!")
+    server_response("User connected.")
 
 @socketio.on("disconnect")
 def handle_connect():
-    # This function will be called when a client connects.
-    # You can add your logic here to handle the connection.
     global connected_clients
     connected_clients = []
     socketio.emit("refresh_clients")
+    server_response("User disconnected.")
 
 @socketio.on("connect_client")
 def connect_client(username):
@@ -43,7 +42,6 @@ def connect_client(username):
     for client in connected_clients:
         response_clients += client + " ❤️ "
     socketio.emit('update_online_users', {'message': response_clients[0:len(response_clients) - 4]})
-
 
 @app.route('/stream/<song>')
 def stream(song):
