@@ -29,3 +29,4 @@ def handle_connect():
     connected_clients = []
     socketio.emit("refresh_clients")
     server_response("User disconnected.")
+
