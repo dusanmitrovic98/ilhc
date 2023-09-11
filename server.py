@@ -62,3 +62,4 @@ def chat():
         if message == "/clear":
             clear_chat(username)
         elif message == "/online":
+            global connected_clients
