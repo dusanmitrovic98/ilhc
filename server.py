@@ -77,6 +77,26 @@ def chat():
             song_pause()
         elif message == "/resume":
             song_resume()
+        elif message.startswith("/rename "):
+            try:
+                print(message)
+                song_number = int(message.split(' ')[1])
+                new_name = message.split(' ')[2]
+                songs = os.listdir(music_folder)
+                if 1 <= song_number <= len(songs):
+                    old_name = songs[song_number - 1]
+                    old_path = os.path.join(music_folder, old_name)
+                    new_path = os.path.join(music_folder, new_name)
+                    try:
+                        os.rename(old_path, new_path)
+                        server_response(f'Song "{old_name}" renamed to "{new_name}"')
+                    except OSError as e:
+                        server_response(f'Error renaming song: {str(e)}')
+                    return ""
+                else:
+                    return "Invalid song number."
+            except ValueError:
+                return "Invalid command format."
         elif message == '/list':
             songs = os.listdir(music_folder)
             i = 1
