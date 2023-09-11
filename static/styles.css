@@ -1,0 +1,31 @@
+.body-container {
+    background-color: #00b3b3;
+}
+
+#chatContainer {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+#chatBox {
+    height: 200px;
+    overflow-y: scroll;
+    color:#005555;
+}
+
+#messageInput {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+#sendMessage {
+    background-color: #005555;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
