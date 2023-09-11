@@ -79,3 +79,4 @@ def chat():
                 song_number = int(message.split(' ')[1])
                 new_name = message.split(' ')[2]
                 songs = os.listdir(music_folder)
+                if 1 <= song_number <= len(songs):
