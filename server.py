@@ -76,3 +76,4 @@ def chat():
         elif message.startswith("/rename "):
             try:
                 print(message)
+                song_number = int(message.split(' ')[1])
