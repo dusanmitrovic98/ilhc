@@ -21,3 +21,4 @@ def index():
 
 @socketio.on("connect")
 def handle_connect():
+    server_response("User connected.")
