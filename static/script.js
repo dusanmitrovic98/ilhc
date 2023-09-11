@@ -21,6 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let message = "";
 
+  function displayMessage(username, message, className) {
+    const isOnline = onlineUsers[username] || false;
+    const messageDiv = document.createElement("div");
+    messageDiv.className = className;
+    const onlineDotClass = isOnline ? "online" : "offline";
+    messageDiv.innerHTML = `<span class="online-dot ${onlineDotClass}"></span><strong>${username}:</strong> ${message}`;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
   // Generate a random cute username
   function generateRandomUsername() {
     const adjectives = ["Cuddly", "Fluffy", "Psycho", "Sunny", "Bubbly"];
@@ -32,28 +42,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const USERNAME_ME = generateRandomUsername();
-
-  let isOnline = true; // Set the initial online status
+  const onlineUsers = {};
+  onlineUsers[USERNAME_ME] = true;
+  // updateOnlineStatus();
 
   // Connect to the Socket.IO server
   const socket = io.connect();
+  // socket.emit("connect", USERNAME_ME);
+  socket.emit("connect_client", USERNAME_ME);
 
-  // Function to display a message in the chat box
-  function displayMessage(username, message, className) {
+  socket.on("refresh_clients", () => {
+    socket.emit("connect_client", USERNAME_ME);
+  });
+
+  function displayMessage(username, message, className, isOnline) {
     const messageDiv = document.createElement("div");
     messageDiv.className = className;
-    messageDiv.innerHTML = `<span class="online-dot ${
-      isOnline ? "online" : "offline"
-    }"></span><strong>${username}:</strong> ${message}`;
+    const onlineDotClass = isOnline ? "online" : "offline";
+    messageDiv.innerHTML = `<span class="online-dot ${onlineDotClass}"></span><strong>${username}:</strong> ${message}`;
     chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
-  }
-
-  // Function to append a message to the chat box
-  function appendMessage(message) {
-    const messageElement = document.createElement("p");
-    messageElement.textContent = message;
-    chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
@@ -70,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function sendMessage() {
     message = messageInput.value;
     if (message.trim() !== "") {
-      // appendMessage(`You: ${message}`);
       displayMessage(USERNAME_ME, message, "message");
       messageInput.value = "";
 
@@ -103,6 +109,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   sendMessageBtn.addEventListener("click", sendMessage);
+
+  // socket.on("connect", () => {
+  //   const username = USERNAME_ME; // Change this to get the user's actual username
+  //   onlineUsers[username] = true;
+  //   // Update the user's online status in the chat
+  //   // updateOnlineStatus();
+  //   // Broadcast the updated online user list to all clients
+  //   broadcastOnlineUsers();
+  // });
+
+  // function broadcastOnlineUsers() {
+  //   const onlineUsersList = Object.keys(onlineUsers).filter(
+  //     (username) => onlineUsers[username]
+  //   );
+  //   io.emit("update_online_users", onlineUsersList);
+  // }
+
+  socket.on("update_online_users", (onlineUsersList) => {
+    // Update the list of online users in your UI
+    const onlineUsersElement = document.getElementById("onlineUsers");
+    onlineUsersElement.innerHTML = "Online Users: " + onlineUsersList.message;
+  });
 
   // Listen for song playback command from the server
   socket.on("play_song", (data) => {

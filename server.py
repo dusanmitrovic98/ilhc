@@ -13,11 +13,37 @@ NAME_SERVER = "Server"
 music_folder = "music"  # Change this to the path of your music folder.
 
 chat_messages = []
-connected_users = []
+connected_clients = []
 
 @app.route('/')
 def index():
     return render_template("index.html")
+
+@socketio.on("connect")
+def handle_connect():
+    # This function will be called when a client connects.
+    # You can add your logic here to handle the connection.
+    print("A client has connected!")
+
+@socketio.on("disconnect")
+def handle_connect():
+    # This function will be called when a client connects.
+    # You can add your logic here to handle the connection.
+    global connected_clients
+    connected_clients = []
+    socketio.emit("refresh_clients")
+
+@socketio.on("connect_client")
+def connect_client(username):
+    global connected_clients
+    connected_clients.append(username)
+    connected_clients = list(set(connected_clients))
+    print(connected_clients[0])
+    response_clients = ''
+    for client in connected_clients:
+        response_clients += client + " ❤️ "
+    socketio.emit('update_online_users', {'message': response_clients[0:len(response_clients) - 4]})
+
 
 @app.route('/stream/<song>')
 def stream(song):
@@ -39,16 +65,27 @@ def chat():
     if message:
         if message == "/clear":
             clear_chat(username)
+        elif message == "/online":
+            global connected_clients
+            connected_clients = []
+            socketio.emit("refresh_clients")
         elif message == "/start":
             play_song_from_start()
+        elif message == "/help":
+            help()
         elif message == "/pause":
             song_pause()
         elif message == "/resume":
             song_resume()
         elif message == '/list':
             songs = os.listdir(music_folder)
-            song_list = "\n".join([f"{i + 1}. {song} ❤️ " for i, song in enumerate(songs)])
-            return song_list
+            # son
+            # g_list = "\n".join([f"{i + 1}. {song} ❤️ " for i, song in enumerate(songs)])
+            i = 1
+            for song in songs:
+                server_response(f"{i}. {song} ❤️ ")
+                i += 1
+            return ''
         elif message.startswith('/play ') or message.startswith('/p ') or message.startswith('/ '):
             try:
                 song_number = int(message.split(' ')[1])
@@ -96,6 +133,18 @@ def song_pause():
 
 def song_resume():
     socketio.emit("song_resume")
+
+def help(): 
+    server_response('/online')
+    server_response('/list')
+    server_response('/play song_number')
+    server_response('/p song_number')
+    server_response('/ song_number')
+    server_response('/download song_url')
+    server_response('/start')
+    server_response('/pause')
+    server_response('/resume')
+    server_response('/clear')
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
