@@ -55,3 +55,4 @@ def generate_audio(song_path):
             yield audio_chunk
 
 @app.route('/chat', methods=['POST'])
+def chat():
