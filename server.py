@@ -75,3 +75,4 @@ def chat():
             song_resume()
         elif message.startswith("/rename "):
             try:
+                print(message)
