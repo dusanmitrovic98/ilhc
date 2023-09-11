@@ -23,3 +23,4 @@ def index():
 def handle_connect():
     server_response("User connected.")
 
+@socketio.on("disconnect")
