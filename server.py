@@ -61,3 +61,4 @@ def chat():
     if message:
         if message == "/clear":
             clear_chat(username)
+        elif message == "/online":
