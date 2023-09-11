@@ -9,3 +9,4 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 NAME_SERVER = "Server"
+
