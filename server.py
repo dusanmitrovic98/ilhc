@@ -13,3 +13,4 @@ NAME_SERVER = "Server"
 music_folder = "music"
 
 chat_messages = []
+connected_clients = []
