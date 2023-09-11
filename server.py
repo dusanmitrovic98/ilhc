@@ -39,3 +39,4 @@ def connect_client(username):
     response_clients = ''
     for client in connected_clients:
         response_clients += client + " ❤️ "
+    socketio.emit('update_online_users', {'message': response_clients[0:len(response_clients) - 4]})
