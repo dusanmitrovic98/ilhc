@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Generate a random cute username
   function generateRandomUsername() {
-    const adjectives = ["Cuddly", "Fluffy", "Tiny", "Sunny", "Bubbly"];
+    const adjectives = ["Cuddly", "Fluffy", "Psycho", "Sunny", "Bubbly"];
     const animals = ["Kitten", "Puppy", "Bunny", "Duckling", "Panda"];
     const randomAdjective =
       adjectives[Math.floor(Math.random() * adjectives.length)];
@@ -140,6 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       displayMessage(data.username, data.message, "message");
     }
+  });
+
+  socket.on("clear_chat", () => {
+    chatBox.innerHTML = "";
   });
 
   // Simulate receiving a welcome message from the server (for demonstration)
