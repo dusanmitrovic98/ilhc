@@ -42,3 +42,4 @@ def connect_client(username):
     socketio.emit('update_online_users', {'message': response_clients[0:len(response_clients) - 4]})
 
 @app.route('/stream/<song>')
+def stream(song):
