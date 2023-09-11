@@ -21,7 +21,7 @@ def stream(song):
 def generate_audio(song_path):
     with open(song_path, "rb") as audio_file:
         while True:
-            audio_chunk = audio_file.read(1024)
+            audio_chunk = audio_file.read(4096)
             if not audio_chunk:
                 break
             yield audio_chunk
@@ -42,7 +42,8 @@ def chat():
                 if 1 <= song_number <= len(songs):
                     song_to_play = songs[song_number - 1]
                     socketio.emit("play_song", {"song": song_to_play})
-                    return song_to_play
+                    socketio.emit("chat_message", {"username": "Server", "message": "Buffering \"" + song_to_play + "\"..."})
+                    return ""
                 else:
                     return "Invalid song number."
             except ValueError:
