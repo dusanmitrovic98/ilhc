@@ -25,3 +25,4 @@ def handle_connect():
 
 @socketio.on("disconnect")
 def handle_connect():
+    global connected_clients
