@@ -68,3 +68,4 @@ def chat():
         elif message == "/start":
             play_song_from_start()
         elif message == "/help":
+            help()
