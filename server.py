@@ -159,6 +159,7 @@ def help():
     server_response('/p song_number')
     server_response('/ song_number')
     server_response('/download song_url')
+    server_response('/rename song_number new_name.mp3')
     server_response('/start')
     server_response('/pause')
     server_response('/resume')
