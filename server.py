@@ -35,3 +35,4 @@ def connect_client(username):
     global connected_clients
     connected_clients.append(username)
     connected_clients = list(set(connected_clients))
+    print(connected_clients[0])
