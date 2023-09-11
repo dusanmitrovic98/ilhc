@@ -6,3 +6,4 @@ import sys
 import os
 
 app = Flask(__name__)
+socketio = SocketIO(app)
