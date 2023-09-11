@@ -58,3 +58,4 @@ def generate_audio(song_path):
 def chat():
     username = request.form.get('message').split('|')[0]
     message = request.form.get('message').split('|')[1]
+    if message:
