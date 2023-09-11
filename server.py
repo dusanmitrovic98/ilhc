@@ -31,3 +31,4 @@ def handle_connect():
     server_response("User disconnected.")
 
 @socketio.on("connect_client")
+def connect_client(username):
