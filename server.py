@@ -14,3 +14,4 @@ music_folder = "music"
 
 chat_messages = []
 connected_clients = []
+
