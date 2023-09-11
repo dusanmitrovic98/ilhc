@@ -4,6 +4,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendMessageBtn = document.getElementById("sendMessage");
   const audioPlayer = document.getElementById("audioPlayer");
 
+  function getCurrentTimeString() {
+    // Create a new Date object to get the current time
+    const currentTime = new Date();
+
+    // Get the hours, minutes, and seconds
+    const hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
+    const seconds = currentTime.getSeconds();
+
+    // Format the time as a string
+    const timeString = `${hours}:${minutes}:${seconds}`;
+
+    return timeString;
+  }
+
+  let message = "";
+
   // Generate a random cute username
   function generateRandomUsername() {
     const adjectives = ["Cuddly", "Fluffy", "Tiny", "Sunny", "Bubbly"];
@@ -40,9 +57,18 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
+  // Function to handle audio playback
+  function playAudio(songBuffer) {
+    const blob = new Blob(songBuffer, { type: "audio/mp3" });
+    const audioUrl = URL.createObjectURL(blob);
+    audioPlayer.src = audioUrl;
+    audioPlayer.controls = true;
+    audioPlayer.autoplay = true;
+  }
+
   // Function to send a message
   function sendMessage() {
-    const message = messageInput.value;
+    message = messageInput.value;
     if (message.trim() !== "") {
       // appendMessage(`You: ${message}`);
       displayMessage(USERNAME_ME, message, "message");
@@ -81,9 +107,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // Listen for song playback command from the server
   socket.on("play_song", (data) => {
     const songPath = `/stream/${data.song}`;
-    audioPlayer.src = songPath;
-    audioPlayer.controls = true;
-    audioPlayer.autoplay = true;
+    const songBuffer = []; // Initialize an array to hold the song chunks
+    fetch(songPath)
+      .then((response) => {
+        const reader = response.body.getReader();
+        return new ReadableStream({
+          start(controller) {
+            function pump() {
+              return reader.read().then(({ done, value }) => {
+                if (done) {
+                  playAudio(songBuffer); // Start playback once the entire song is received
+
+                  return;
+                }
+                songBuffer.push(value); // Append the chunk to the buffer
+                pump();
+              });
+            }
+            pump();
+          },
+        });
+      })
+      .catch((error) => {
+        console.error("Error loading song:", error);
+      });
   });
 
   // Listen for incoming chat messages from the server
