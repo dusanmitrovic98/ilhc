@@ -47,3 +47,4 @@ def stream(song):
     return Response(generate_audio(song_path), mimetype="audio/mpeg")
 
 def generate_audio(song_path):
+    with open(song_path, "rb") as audio_file:
