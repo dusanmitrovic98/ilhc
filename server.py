@@ -10,7 +10,7 @@ socketio = SocketIO(app)
 
 NAME_SERVER = "Server"
 
-music_folder = "music"  # Change this to the path of your music folder.
+music_folder = "music"
 
 chat_messages = []
 connected_clients = []
@@ -21,8 +21,6 @@ def index():
 
 @socketio.on("connect")
 def handle_connect():
-    # This function will be called when a client connects.
-    # You can add your logic here to handle the connection.
     server_response("User connected.")
 
 @socketio.on("disconnect")
@@ -120,9 +118,7 @@ def chat():
             print(url)
             download_from_url(url)
         else:
-            # Add the user's message to the chat_messages list
             chat_messages.append(message)
-            # Broadcast the message to all connected clients
             socketio.emit('chat_message', {'username': username, 'message': message})
             return ""
     return ""
