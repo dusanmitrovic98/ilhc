@@ -36,3 +36,4 @@ def connect_client(username):
     connected_clients.append(username)
     connected_clients = list(set(connected_clients))
     print(connected_clients[0])
+    response_clients = ''
