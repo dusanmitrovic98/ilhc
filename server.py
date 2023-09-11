@@ -65,3 +65,4 @@ def chat():
             global connected_clients
             connected_clients = []
             socketio.emit("refresh_clients")
+        elif message == "/start":
