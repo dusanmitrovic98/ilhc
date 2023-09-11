@@ -49,3 +49,4 @@ def stream(song):
 def generate_audio(song_path):
     with open(song_path, "rb") as audio_file:
         while True:
+            audio_chunk = audio_file.read(4096)
