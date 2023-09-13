@@ -137,6 +137,13 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.innerHTML = "";
   });
 
+  socket.on("clear_chat_user", (data) => {
+    if (data.username != USERNAME_ME) {
+      return;
+    }
+    chatBox.innerHTML = "";
+  });
+
   socket.on("play_song_from_start", () => {
     audioPlayer.currentTime = 0;
     audioPlayer.controls = true;

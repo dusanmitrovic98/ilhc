@@ -141,6 +141,10 @@ def connect_client(username):
     # Reverse the order to get the messages in ascending order
     chat_history = list(chat_history)[::-1]
 
+    print(len(chat_history))
+
+    socketio.emit("clear_chat_user", {'username': username})
+
     # Emit the chat messages to the connected user
     for chat_entry in chat_history:
         socketio.emit("fetch_chat_log", {"connected_user": username, "username": chat_entry['username'], "message": chat_entry['message']})
@@ -166,7 +170,7 @@ def chat():
     command_keys = COMMANDS.keys()
 
     # Check if the message does not start with any of the command keys
-    if message and not any(message.startswith(key) for key in command_keys):
+    if message and not any(message.startswith(key.split(' ')[0]) for key in command_keys):
         chat_entry = {
             'username': username,
             'message': message,
