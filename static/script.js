@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const audioUrl = URL.createObjectURL(blob);
     audioPlayer.src = audioUrl;
     audioPlayer.controls = true;
-    audioPlayer.autoplay = true;
   }
 
   function sendMessage() {
@@ -75,6 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error("Error sending message:", error);
         });
     }
+  }
+
+  function updateSongList(songs) {
+    const songListElement = document.getElementById("song_list");
+    songListElement.innerHTML = "";
+    songs.forEach((song, index) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = `${index + 1}. ${song} ❤️ `;
+      songListElement.appendChild(listItem);
+    });
   }
 
   messageInput.addEventListener("keydown", (event) => {
@@ -124,13 +133,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   socket.on("fetch_chat_log", (data) => {
-    if (data.username == USERNAME_ME) {
+    if (data.connected_user == USERNAME_ME) {
+      displayMessage(data.username, data.message, "message");
+    } else {
       return;
     }
-    if (data.connected_user != USERNAME_ME) {
-      return;
-    }
-    displayMessage(data.username, data.message, "message");
   });
 
   socket.on("clear_chat", () => {
@@ -147,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("play_song_from_start", () => {
     audioPlayer.currentTime = 0;
     audioPlayer.controls = true;
-    audioPlayer.autoplay = true;
+    audioPlayer.autoplay = false;
   });
 
   socket.on("song_pause", () => {
@@ -160,6 +167,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   socket.on("set_song_current_time", (data) => {
     audioPlayer.currentTime = data.new_current_time;
+  });
+
+  socket.on("update_song_list", (data) => {
+    updateSongList(data.songs);
+  });
+
+  socket.on("set_loop_flag", (data) => {
+    audioPlayer.loop = data.loop_flag;
+  });
+
+  socket.on("set_autoplay_flag", (data) => {
+    flag = data.autoplay_flag;
+    audioPlayer.autoplay = flag;
+    console.log(audioPlayer.autoplay);
   });
 
   setTimeout(function () {
