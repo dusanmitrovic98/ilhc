@@ -228,7 +228,6 @@ def timestamp_fetched(data):
     global sync_timestamp
     server_response(str(data))
     socketio.emit("sync_users", {"timestamp": data})
-    
     # sync_timestamp = timestamp
     # if sync:
         # socketio.emit("sync_users", {'username':  username, 'timestamp': sync_timestamp})
