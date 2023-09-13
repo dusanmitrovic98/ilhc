@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
             function pump() {
               return reader.read().then(({ done, value }) => {
                 if (done) {
+                  socket.emit("song_ready", { username: USERNAME_ME });
                   playAudio(songBuffer);
                   return;
                 }
@@ -180,14 +181,18 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("set_autoplay_flag", (data) => {
     flag = data.autoplay_flag;
     audioPlayer.autoplay = flag;
-    console.log(audioPlayer.autoplay);
   });
 
   socket.on("fetch_timestamp", (data) => {
     timestamp = audioPlayer.currentTime;
     if (data.username == USERNAME_ME) {
-      socket.emit("timestamp_fetched", { timestamp: timestamp });
+      socket.emit("timestamp_fetched", timestamp);
     }
+  });
+
+  socket.on("sync_users", (data) => {
+    timestamp = data.timestamp;
+    audioPlayer.currentTime = timestamp;
   });
 
   setTimeout(function () {

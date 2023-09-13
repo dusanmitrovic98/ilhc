@@ -18,6 +18,7 @@ collection_messages = db["messages"]
 # Flags
 autoplay = False
 loop = False
+sync_timestamp = 0
 
 # Constants
 NAME_SERVER = "Server"
@@ -38,8 +39,8 @@ COMMANDS = {
         '/clear': 'Clears the chat.',
         '/loop on/off': 'Looping enabled/disabled.',
         '/autoplay on/off': 'Autoplay enabled/disabled.',
-        '/timestamp user_number': 'Fetches timestamp of the user under.',
-        '/ts user_number': 'Fetches timestamp of the user under.',
+        # '/timestamp user_number': 'Fetches timestamp of the user under.',
+        # '/ts user_number': 'Fetches timestamp of the user under.',
     }
 
 # Data storage
@@ -51,6 +52,7 @@ def get_song_list():
     return songs
 
 # Helper functions
+socketio.on("server_response")
 def server_response(response):
     socketio.emit("chat_message", {"username": NAME_SERVER, "message": response})
 
@@ -153,7 +155,16 @@ def fetch_timestamp(message):
     user_number = int(message.split(' ')[1])
     username = connected_clients[user_number - 1]
     socketio.emit("fetch_timestamp", {'username': username})
-    # todo continue 
+
+def sync_user(message):
+    global sync_timestamp
+    if len(message.split(' ')) <= 1:
+            server_response("Invalid command format.")
+            return
+    user_number = int(message.split(' ')[1])
+    username = connected_clients[user_number - 1]
+    sync_timestamp = 0
+    socketio.emit("fetch_timestamp", {'username': username, 'sync': True})
 
 def loop(message):
     global loop
@@ -213,8 +224,25 @@ def index():
     return render_template("index.html")
 
 @socketio.on("timestamp_fetched")
-def handle_connect(timestamp):
-    server_response(str(timestamp))
+def timestamp_fetched(data):
+    global sync_timestamp
+    server_response(str(data))
+    socketio.emit("sync_users", {"timestamp": data})
+    
+    # sync_timestamp = timestamp
+    # if sync:
+        # socketio.emit("sync_users", {'username':  username, 'timestamp': sync_timestamp})
+
+@socketio.on("sync_users")
+def sync_users(timestamp):
+    socketio.emit("sync_users", { "timestamp": timestamp})
+    server_response("Users synced.")
+
+@socketio.on("song_ready")
+def song_ready(data):
+    if 'username' in data:
+        username = data['username']
+    server_response(f'{username} is ready.')
 
 @socketio.on("connect")
 def handle_connect():
@@ -224,6 +252,7 @@ def handle_connect():
 @socketio.on("disconnect")
 def handle_disconnect():
     global connected_clients
+    connected_clients = []
     socketio.emit("refresh_clients")
     server_response("User disconnected.")
 
@@ -292,6 +321,8 @@ def chat():
             list_users()
         elif message.startswith('/timestamp ') or message.startswith('/ts '):
             fetch_timestamp(message)
+        elif message.startswith('/sync '):
+            sync_user(message)
             
     socketio.emit("chat_message", { "username": username, "message": message })
 
