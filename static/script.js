@@ -12,12 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const minutes = currentTime.getMinutes();
     const seconds = currentTime.getSeconds();
     const timeString = `${hours}:${minutes}:${seconds}`;
-
     return timeString;
   }
 
-  function displayMessage(username, message, className) {
-    const isOnline = onlineUsers[username] || false;
+  function displayMessage(username, message, className, isOnline) {
     const messageDiv = document.createElement("div");
     messageDiv.className = className;
     const onlineDotClass = isOnline ? "online" : "offline";
@@ -45,15 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("refresh_clients", () => {
     socket.emit("connect_client", USERNAME_ME);
   });
-
-  function displayMessage(username, message, className, isOnline) {
-    const messageDiv = document.createElement("div");
-    messageDiv.className = className;
-    const onlineDotClass = isOnline ? "online" : "offline";
-    messageDiv.innerHTML = `<span class="online-dot ${onlineDotClass}"></span><strong>${username}:</strong> ${message}`;
-    chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
 
   function playAudio(songBuffer) {
     const blob = new Blob(songBuffer, { type: "audio/mp3" });
@@ -98,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   socket.on("update_online_users", (onlineUsersList) => {
     const onlineUsersElement = document.getElementById("onlineUsers");
-    onlineUsersElement.innerHTML = "Online Users: " + onlineUsersList.message;
+    onlineUsersElement.innerHTML = "Online: " + onlineUsersList.message;
   });
 
   socket.on("play_song", (data) => {
@@ -113,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
               return reader.read().then(({ done, value }) => {
                 if (done) {
                   playAudio(songBuffer);
-
                   return;
                 }
                 songBuffer.push(value);
@@ -130,10 +118,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   socket.on("chat_message", (data) => {
-    if (data.username == USERNAME_ME) {
-    } else {
+    if (data.username != USERNAME_ME) {
       displayMessage(data.username, data.message, "message");
     }
+  });
+
+  socket.on("fetch_chat_log", (data) => {
+    if (data.username == USERNAME_ME) {
+      return;
+    }
+    if (data.connected_user != USERNAME_ME) {
+      return;
+    }
+    displayMessage(data.username, data.message, "message");
   });
 
   socket.on("clear_chat", () => {
@@ -154,7 +151,11 @@ document.addEventListener("DOMContentLoaded", () => {
     audioPlayer.play();
   });
 
+  socket.on("set_song_current_time", (data) => {
+    audioPlayer.currentTime = data.new_current_time;
+  });
+
   setTimeout(function () {
-    displayMessage("Server", "Welcome to the chat!", "server-message");
+    displayMessage("Server", "Welcome to the chat!", "message");
   }, 1000);
 });
