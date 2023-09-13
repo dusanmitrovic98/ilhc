@@ -183,6 +183,11 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(audioPlayer.autoplay);
   });
 
+  socket.on("fetch_timestamp", (data) => {
+    timestamp = audioPlayer.timestamp;
+    console.log(timestamp);
+  });
+
   setTimeout(function () {
     displayMessage("Server", "Welcome to the chat!", "message");
   }, 1000);

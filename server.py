@@ -286,6 +286,8 @@ def chat():
             autoplay(message)
         elif message.startswith('/users'):
             list_users()
+        elif message.startswith('/timestamp '):
+            fetch_timestamp()
             
     socketio.emit("chat_message", { "username": username, "message": message })
 
