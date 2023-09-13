@@ -211,6 +211,10 @@ def autoplay(message):
 def index():
     return render_template("index.html")
 
+@socketio.on("timestamp_fetched")
+def handle_connect(timestamp):
+    server_response(str(timestamp))
+
 @socketio.on("connect")
 def handle_connect():
     server_response("User connected.")

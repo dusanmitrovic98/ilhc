@@ -185,7 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   socket.on("fetch_timestamp", (data) => {
     timestamp = audioPlayer.currentTime;
-    socket.emit("timestamp_fetched", { timestamp: timestamp });
+    if (data.username == USERNAME_ME) {
+      socket.emit("timestamp_fetched", { timestamp: timestamp });
+    }
   });
 
   setTimeout(function () {
