@@ -38,6 +38,7 @@ COMMANDS = {
         '/clear': 'Clears the chat.',
         '/loop on/off': 'Looping enabled/disabled.',
         '/autoplay on/off': 'Autoplay enabled/disabled.',
+        '/timestamp user_number': 'Fetches timestamp of the user under.',
     }
 
 # Data storage
@@ -144,6 +145,15 @@ def help():
     for command, description in COMMANDS.items():
         server_response(f'{command}: {description}')
 
+def fetch_timestamp(message):
+    if len(message.split(' ')) <= 1:
+            server_response("Invalid command format.")
+            return
+    user_number = int(message.split(' ')[1])
+    username = connected_clients[user_number - 1]
+    socketio.emit("fetch_timestamp", {'username': username})
+    # todo continue
+
 def loop(message):
     global loop
     try:
@@ -223,7 +233,6 @@ def connect_client(username):
     socketio.emit('update_online_users', {'message': response_clients}) # todo update_online_users !!!
     socketio.emit("set_autoplay_flag", { "autoplay_flag": autoplay })
     socketio.emit("set_loop_flag", { "loop_flag": loop })
-
 
 @app.route('/stream/<song>')
 def stream(song):
