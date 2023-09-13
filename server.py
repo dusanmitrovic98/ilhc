@@ -39,6 +39,7 @@ COMMANDS = {
         '/loop on/off': 'Looping enabled/disabled.',
         '/autoplay on/off': 'Autoplay enabled/disabled.',
         '/timestamp user_number': 'Fetches timestamp of the user under.',
+        '/ts user_number': 'Fetches timestamp of the user under.',
     }
 
 # Data storage
@@ -290,7 +291,7 @@ def chat():
             autoplay(message)
         elif message.startswith('/users'):
             list_users()
-        elif message.startswith('/timestamp '):
+        elif message.startswith('/timestamp ') or message.startswith('/ts '):
             fetch_timestamp(message)
             
     socketio.emit("chat_message", { "username": username, "message": message })
