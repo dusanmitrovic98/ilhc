@@ -153,7 +153,7 @@ def fetch_timestamp(message):
     user_number = int(message.split(' ')[1])
     username = connected_clients[user_number - 1]
     socketio.emit("fetch_timestamp", {'username': username})
-    # todo continue
+    # todo continue 
 
 def loop(message):
     global loop
