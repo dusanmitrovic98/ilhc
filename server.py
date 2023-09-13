@@ -224,7 +224,7 @@ def handle_connect():
 @socketio.on("disconnect")
 def handle_disconnect():
     global connected_clients
-    connected_clients = []
+    # connected_clients = []
     socketio.emit("refresh_clients")
     server_response("User disconnected.")
 
