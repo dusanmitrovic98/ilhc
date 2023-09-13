@@ -287,7 +287,7 @@ def chat():
         elif message.startswith('/users'):
             list_users()
         elif message.startswith('/timestamp '):
-            fetch_timestamp()
+            fetch_timestamp(message)
             
     socketio.emit("chat_message", { "username": username, "message": message })
 

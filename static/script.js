@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   socket.on("fetch_timestamp", (data) => {
     timestamp = audioPlayer.timestamp;
-    console.log(timestamp);
+    socket.emit("timestamp_fetched", { timestamp: timestamp });
   });
 
   setTimeout(function () {
