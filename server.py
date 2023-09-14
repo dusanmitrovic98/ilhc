@@ -16,9 +16,10 @@ db = client['ilhchat']
 collection_messages = db["messages"]
 
 # Flags
-autoplay = False
-loop = False
+autoplay_mem = False
+loop_mem = False
 sync_timestamp = 0
+sync_timestamp_username = ""
 
 # Constants
 NAME_SERVER = "Server"
@@ -39,8 +40,8 @@ COMMANDS = {
         '/clear': 'Clears the chat.',
         '/loop on/off': 'Looping enabled/disabled.',
         '/autoplay on/off': 'Autoplay enabled/disabled.',
-        # '/timestamp user_number': 'Fetches timestamp of the user under.',
-        # '/ts user_number': 'Fetches timestamp of the user under.',
+        '/sync user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
+        '/s user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
     }
 
 # Data storage
@@ -148,13 +149,15 @@ def help():
     for command, description in COMMANDS.items():
         server_response(f'{command}: {description}')
 
-def fetch_timestamp(message):
+def sync_timestamp(message):
+    global sync_timestamp_username
     if len(message.split(' ')) <= 1:
             server_response("Invalid command format.")
             return
     user_number = int(message.split(' ')[1])
     username = connected_clients[user_number - 1]
-    socketio.emit("fetch_timestamp", {'username': username})
+    sync_timestamp_username = username
+    socketio.emit("sync_timestamp", {'username': username})
 
 def sync_user(message):
     global sync_timestamp
@@ -164,10 +167,10 @@ def sync_user(message):
     user_number = int(message.split(' ')[1])
     username = connected_clients[user_number - 1]
     sync_timestamp = 0
-    socketio.emit("fetch_timestamp", {'username': username, 'sync': True})
+    socketio.emit("sync_timestamp", {'username': username, 'sync': True})
 
 def loop(message):
-    global loop
+    global loop_mem
     try:
         if len(message.split(' ')) <= 1:
             server_response("Invalid command format.")
@@ -175,11 +178,11 @@ def loop(message):
         loop_flag = message.split(' ')[1]
         if loop_flag == 'on':
             socketio.emit("set_loop_flag", { "loop_flag": True })
-            loop = True
+            loop_mem = True
             server_response('Looping enabled.')
         elif loop_flag == 'off':
             socketio.emit("set_loop_flag", { "loop_flag": False })
-            loop = False
+            loop_mem = False
             server_response('Looping disabled.')
     except ValueError:
         server_response("Invalid command format.")
@@ -200,7 +203,7 @@ def list_users():
         i += 1
 
 def autoplay(message):
-    global autoplay
+    global autoplay_mem
     try:
         if len(message.split(' ')) <= 1:
             server_response("Invalid command format.")
@@ -208,11 +211,11 @@ def autoplay(message):
         autoplay_flag = message.split(' ')[1]
         if autoplay_flag == 'on':
             socketio.emit("set_autoplay_flag", { "autoplay_flag": True })
-            autoplay = True
+            autoplay_mem = True
             server_response('Autoplay enabled.')
         elif autoplay_flag == 'off':
             socketio.emit("set_autoplay_flag", { "autoplay_flag": False })
-            autoplay = False
+            autoplay_mem = False
             server_response('Autoplay disabled.')
     except ValueError:
         server_response("Invalid command format.")
@@ -223,11 +226,11 @@ def autoplay(message):
 def index():
     return render_template("index.html")
 
-@socketio.on("timestamp_fetched")
+@socketio.on("timestamp_synced")
 def timestamp_fetched(data):
-    global sync_timestamp
+    global sync_timestamp, sync_timestamp_username
     server_response(str(data))
-    socketio.emit("sync_users", {"timestamp": data})
+    socketio.emit("sync_users", {"username": sync_timestamp_username, "timestamp": data})
     # sync_timestamp = timestamp
     # if sync:
         # socketio.emit("sync_users", {'username':  username, 'timestamp': sync_timestamp})
@@ -263,8 +266,8 @@ def connect_client(username):
     connected_clients = list(set(connected_clients))
     response_clients = ' ❤️ '.join(connected_clients)
     socketio.emit('update_online_users', {'message': response_clients}) # todo update_online_users !!!
-    socketio.emit("set_autoplay_flag", { "autoplay_flag": autoplay })
-    socketio.emit("set_loop_flag", { "loop_flag": loop })
+    socketio.emit("set_autoplay_flag", { "autoplay_flag": autoplay_mem })
+    socketio.emit("set_loop_flag", { "loop_flag": loop_mem })
 
 @app.route('/stream/<song>')
 def stream(song):
@@ -312,16 +315,16 @@ def chat():
             download_from_url(message)
         elif message.startswith('/songtime '):
             set_song_current_time(message)
-        elif message.startswith('/loop'):
+        elif message.startswith('/loop '):
             loop(message)
-        elif message.startswith('/autoplay'):
+        elif message.startswith('/autoplay '):
             autoplay(message)
         elif message.startswith('/users'):
             list_users()
-        elif message.startswith('/timestamp ') or message.startswith('/ts '):
-            fetch_timestamp(message)
-        elif message.startswith('/sync '):
-            sync_user(message)
+        elif message.startswith('/sync ') or message.startswith('/s '):
+            sync_timestamp(message)
+        # elif message.startswith('/sync '):
+        #     sync_user(message)
             
     socketio.emit("chat_message", { "username": username, "message": message })
 

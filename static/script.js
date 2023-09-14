@@ -183,16 +183,19 @@ document.addEventListener("DOMContentLoaded", () => {
     audioPlayer.autoplay = flag;
   });
 
-  socket.on("fetch_timestamp", (data) => {
+  socket.on("sync_timestamp", (data) => {
     timestamp = audioPlayer.currentTime;
     if (data.username == USERNAME_ME) {
-      socket.emit("timestamp_fetched", timestamp);
+      socket.emit("timestamp_synced", timestamp);
     }
   });
 
   socket.on("sync_users", (data) => {
+    username = data.username;
     timestamp = data.timestamp;
-    audioPlayer.currentTime = timestamp;
+    if (username != USERNAME_ME) {
+      audioPlayer.currentTime = timestamp;
+    }
   });
 
   setTimeout(function () {
