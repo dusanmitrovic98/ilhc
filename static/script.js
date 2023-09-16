@@ -50,3 +50,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const audioUrl = URL.createObjectURL(blob);
     audioPlayer.src = audioUrl;
     audioPlayer.controls = true;
+  }
