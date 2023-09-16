@@ -81,3 +81,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const songListElement = document.getElementById("song_list");
     songListElement.innerHTML = "";
     songs.forEach((song, index) => {
+      const listItem = document.createElement("li");
