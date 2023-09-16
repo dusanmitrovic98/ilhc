@@ -53,3 +53,4 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function sendMessage() {
+    message = messageInput.value;
