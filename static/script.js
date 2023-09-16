@@ -90,3 +90,4 @@ document.addEventListener("DOMContentLoaded", () => {
   messageInput.addEventListener("keydown", (event) => {
     if (event.keyCode === 13) {
       sendMessageBtn.click();
+    }
