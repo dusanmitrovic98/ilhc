@@ -92,3 +92,132 @@ document.addEventListener("DOMContentLoaded", () => {
       sendMessageBtn.click();
     }
   });
+
+  sendMessageBtn.addEventListener("click", sendMessage);
+
+  socket.on("update_online_users", (onlineUsersList) => {
+    const onlineUsersElement = document.getElementById("onlineUsers");
+    onlineUsersElement.innerHTML = "Online: " + onlineUsersList.message;
+  });
+
+  socket.on("play_song", (data) => {
+    const songPath = `/stream/${data.song}`;
+    const songBuffer = [];
+    fetch(songPath)
+      .then((response) => {
+        const reader = response.body.getReader();
+        return new ReadableStream({
+          start(controller) {
+            function pump() {
+              return reader.read().then(({ done, value }) => {
+                if (done) {
+                  socket.emit("song_ready", { username: USERNAME_ME });
+                  socket.emit("song_ready_to_play");
+                  playAudio(songBuffer);
+                  return;
+                }
+                songBuffer.push(value);
+                pump();
+              });
+            }
+            pump();
+          },
+        });
+      })
+      .catch((error) => {
+        console.error("Error loading song:", error);
+      });
+  });
+
+  socket.on("chat_message", (data) => {
+    if (data.username != USERNAME_ME) {
+      displayMessage(data.username, data.message, "message");
+    }
+  });
+
+  socket.on("fetch_chat_log", (data) => {
+    if (data.connected_user == USERNAME_ME) {
+      displayMessage(data.username, data.message, "message");
+    } else {
+      return;
+    }
+  });
+
+  socket.on("clear_chat", () => {
+    chatBox.innerHTML = "";
+  });
+
+  socket.on("clear_chat_user", (data) => {
+    if (data.username != USERNAME_ME) {
+      return;
+    }
+    chatBox.innerHTML = "";
+  });
+
+  socket.on("play_song_from_start", () => {
+    audioPlayer.currentTime = 0;
+    audioPlayer.controls = true;
+    audioPlayer.autoplay = false;
+  });
+
+  socket.on("song_pause", () => {
+    audioPlayer.pause();
+  });
+
+  socket.on("song_resume", () => {
+    audioPlayer.play();
+  });
+
+  socket.on("set_song_current_time", (data) => {
+    audioPlayer.currentTime = data.new_current_time;
+  });
+
+  socket.on("update_song_list", (data) => {
+    updateSongList(data.songs);
+  });
+
+  socket.on("set_loop_flag", (data) => {
+    audioPlayer.loop = data.loop_flag;
+  });
+
+  socket.on("set_autoplay_flag", (data) => {
+    flag = data.autoplay_flag;
+    audioPlayer.autoplay = flag;
+  });
+
+  socket.on("sync_timestamp", (data) => {
+    timestamp = audioPlayer.currentTime;
+    if (data.username == USERNAME_ME) {
+      socket.emit("timestamp_synced", timestamp);
+    }
+  });
+
+  socket.on("fetch_timestamp", (data) => {
+    timestamp = audioPlayer.currentTime;
+    if (data.username == USERNAME_ME) {
+      socket.emit("timestamp_fetched", timestamp);
+    }
+  });
+
+  socket.on("sync_users", (data) => {
+    username = data.username;
+    timestamp = data.timestamp;
+    if (username != USERNAME_ME) {
+      audioPlayer.currentTime = timestamp;
+    }
+  });
+
+  socket.on("all_users_ready", () => {
+    console.log("all_users_ready");
+    audioPlayer.play();
+  });
+
+  socket.on("update_timer", (data) => {
+    seconds = data.seconds;
+    timer.innerHTML = "Server timer: " + seconds;
+  });
+
+  setTimeout(function () {
+    displayMessage("Server", "Welcome to the chat!", "message");
+  }, 1000);
+});
