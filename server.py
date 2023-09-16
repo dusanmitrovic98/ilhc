@@ -1,8 +1,11 @@
+import threading
+import time
 from flask import Flask, Response, render_template, request
 from flask_socketio import SocketIO
 from pytube.cli import on_progress
 from pymongo import MongoClient
 from datetime import datetime
+from moviepy.editor import AudioFileClip
 from pytube import YouTube
 import sys
 import os
@@ -10,6 +13,8 @@ import random
 
 available_songs = []  # Add your available songs to this list
 is_random_playing = False
+allrandom = True
+song_path = "C:/Users/BK2O198/Documents/Workstation/ilhchat/music/sia_snowman.mp3"
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -44,11 +49,12 @@ COMMANDS = {
         '/clear': 'Clears the chat.',
         '/loop on/off': 'Looping enabled/disabled.',
         '/autoplay on/off': 'Autoplay enabled/disabled.',
+        '/allrandom on/off': 'Allrandom enabled/disabled.',
         '/sync user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
         '/s user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
         '/timestamp user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
         '/ts user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
-        '/random': 'Plays random song.',
+        '/random': 'Plays random song. If allrandom is enabled it will continue to play new random songs each time song is finished.',
     }
 
 # Data storage
@@ -57,6 +63,54 @@ connected_clients = []
 
 total_users = 0
 users_ready = 0
+timer_time = 0
+
+def countdown_timer(seconds):
+    global timer_time, allrandom
+    timer_time = 0
+    for i in range(int(seconds), 0, -1):
+        timer_time = i
+        socketio.emit("update_timer", {'seconds': timer_time})
+        print(f"Countdown: {timer_time} seconds remaining")
+        time.sleep(1)
+    
+    timer_time = 0
+    if allrandom:
+        play_random_song()
+    socketio.emit("update_timer", {'seconds': timer_time})
+    print("Countdown finished!")
+
+def get_audio_duration(file_path):
+    try:
+        audio_file = AudioFileClip(file_path)
+
+        # Get the duration in seconds
+        duration_seconds = audio_file.duration
+
+        print(f"The duration of the song is {duration_seconds} seconds.")
+
+        return duration_seconds
+    except Exception as e:
+        print(f"Error: {e}")
+    return None
+
+def start_timer():
+    global current_song_index, allrandom, song_path
+
+    print(song_path)
+    seconds = get_audio_duration(song_path)
+
+    if seconds == None:
+        return
+    
+    song_duration = seconds   # Replace with the actual duration of the song in seconds
+
+    # If "allrandom" is true, set a timer to play the next song
+    if allrandom:
+        server_response(f'Started timer of: {song_duration}')
+        countdown_timer(song_duration)
+        # timer = threading.Timer(song_duration, play_random_song)
+        # timer.start()
 
 def get_song_list():
     songs = os.listdir(MUSIC_FOLDER)
@@ -85,18 +139,25 @@ def song_resume():
     socketio.emit("song_resume")
 
 def play_random_song():
-    global is_random_playing
+    global is_random_playing, song_path
     if is_random_playing:
         songs = get_song_list()
         if songs:
             random_song = random.choice(songs)
+            print(random_song)
+            song_path = f'C:/Users/BK2O198/Documents/Workstation/ilhchat/music/{random_song}'
             socketio.emit("play_song", {"song": random_song})
             server_response(f'Buffering random song "{random_song}"...')
         else:
             server_response("No songs available for random playback.")
 
+# Example usage:
+
+# You can continue with other tasks while the countdown is running.
+
 
 def play_song(message):
+    global song_path
     try:
         songs = os.listdir(MUSIC_FOLDER)
         if len(message.split(' ')) <= 1:
@@ -105,6 +166,7 @@ def play_song(message):
         song_number = int(message.split(' ')[1])
         if 1 <= song_number <= len(songs):
             song_to_play = songs[song_number - 1]
+            song_path = song_to_play
             socketio.emit("play_song", {"song": song_to_play})
             server_response(f'Buffering "{song_to_play}"...')
             return ""
@@ -243,6 +305,23 @@ def autoplay(message):
         server_response("Invalid command format.")
         return
 
+def all_random(message):
+    global allrandom
+    try:
+        if len(message.split(' ')) <= 1:
+            server_response("Invalid command format.")
+            return
+        all_random = message.split(' ')[1]
+        if all_random == 'on':
+            allrandom = True
+            server_response('Allrandom enabled.')
+        elif all_random == 'off':
+            allrandom = False
+            server_response('Allrandom disabled.')
+    except ValueError:
+        server_response("Invalid command format.")
+        return
+
 # Routes
 @app.route('/')
 def index():
@@ -289,18 +368,15 @@ def handle_disconnect():
 
 @socketio.on("song_ready_to_play")
 def song_ready_to_play():
-    global users_ready
+    global users_ready, autoplay_mem
     users_ready += 1
     server_response(f'Users ready: {users_ready}')
     if users_ready == total_users:
-        server_response("All users are ready...")
-        if (autoplay_mem == True):
-            socketio.emit("all_users_ready")
-            server_response("Song will play...")
-        elif (autoplay_mem == False):
-            server_response("Song is ready to play...")
-            server_response("Autoplay is disabled...")
         users_ready = 0
+        server_response("All users are ready...")
+        socketio.emit("all_users_ready")
+        server_response("Song will play...")
+        start_timer()
 
 @socketio.on("connect_client")
 def connect_client(username):
@@ -367,12 +443,16 @@ def chat():
             loop(message)
         elif message.startswith('/autoplay '):
             autoplay(message)
+        elif message.startswith('/allrandom '):
+            all_random(message)
         elif message.startswith('/users'):
             list_users()
         elif message.startswith('/sync ') or message.startswith('/s '):
             sync_timestamp(message)
         elif message == "/random":
             is_random_playing = True
+            autoplay("/autoplay off")
+            # all_random("/allrandom on")
             server_response("Random playback started.")
             play_random_song()
             return ""

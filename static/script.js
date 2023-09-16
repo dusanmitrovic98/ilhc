@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const messageInput = document.getElementById("messageInput");
   const sendMessageBtn = document.getElementById("sendMessage");
   const audioPlayer = document.getElementById("audioPlayer");
+  const timer = document.getElementById("timer");
 
   let message = "";
 
@@ -209,6 +210,11 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("all_users_ready", () => {
     console.log("all_users_ready");
     audioPlayer.play();
+  });
+
+  socket.on("update_timer", (data) => {
+    seconds = data.seconds;
+    timer.innerHTML = "Server timer: " + seconds;
   });
 
   setTimeout(function () {
