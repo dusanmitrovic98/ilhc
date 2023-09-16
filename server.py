@@ -294,11 +294,11 @@ def song_ready_to_play():
     server_response(f'Users ready: {users_ready}')
     if users_ready == total_users:
         server_response("All users are ready...")
-        
-        if (autoplay == True):
+        if (autoplay_mem == True):
+            socketio.emit("all_users_ready")
             server_response("Song will play...")
-            # socketio.emit("all_users_ready")
-        elif (autoplay == False):
+        elif (autoplay_mem == False):
+            server_response("Song is ready to play...")
             server_response("Autoplay is disabled...")
         users_ready = 0
 
