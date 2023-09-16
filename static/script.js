@@ -55,3 +55,4 @@ document.addEventListener("DOMContentLoaded", () => {
   function sendMessage() {
     message = messageInput.value;
     if (message.trim() !== "") {
+      displayMessage(USERNAME_ME, message, "message");
