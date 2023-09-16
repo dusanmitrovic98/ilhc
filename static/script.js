@@ -70,3 +70,4 @@ document.addEventListener("DOMContentLoaded", () => {
           if (responseText != "") {
             displayMessage("Server", responseText, "server-message");
           }
+        })
