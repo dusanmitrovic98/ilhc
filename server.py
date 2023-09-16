@@ -6,7 +6,10 @@ from pytube.cli import on_progress
 from pymongo import MongoClient
 from datetime import datetime
 from moviepy.editor import AudioFileClip
+<<<<<<< HEAD
 from pytube import YouTube
+=======
+>>>>>>> 968126f36ae3c3824a5c7ad730caac5f0225cf31
 import sys
 import os
 import random
@@ -66,7 +69,11 @@ users_ready = 0
 timer_time = 0
 
 def countdown_timer(seconds):
+<<<<<<< HEAD
     global timer_time, allrandom
+=======
+    global timer_time
+>>>>>>> 968126f36ae3c3824a5c7ad730caac5f0225cf31
     timer_time = 0
     for i in range(int(seconds), 0, -1):
         timer_time = i
@@ -75,8 +82,11 @@ def countdown_timer(seconds):
         time.sleep(1)
     
     timer_time = 0
+<<<<<<< HEAD
     if allrandom:
         play_random_song()
+=======
+>>>>>>> 968126f36ae3c3824a5c7ad730caac5f0225cf31
     socketio.emit("update_timer", {'seconds': timer_time})
     print("Countdown finished!")
 
@@ -106,11 +116,22 @@ def start_timer():
     song_duration = seconds   # Replace with the actual duration of the song in seconds
 
     # If "allrandom" is true, set a timer to play the next song
+<<<<<<< HEAD
     if allrandom:
         server_response(f'Started timer of: {song_duration}')
         countdown_timer(song_duration)
         # timer = threading.Timer(song_duration, play_random_song)
         # timer.start()
+=======
+    print("flag 1")
+    print(allrandom)
+    if allrandom:
+        print("flag 2")
+        server_response(f'Started timer of: {song_duration}')
+        countdown_timer(song_duration)
+        timer = threading.Timer(song_duration, play_random_song)
+        timer.start()
+>>>>>>> 968126f36ae3c3824a5c7ad730caac5f0225cf31
 
 def get_song_list():
     songs = os.listdir(MUSIC_FOLDER)
@@ -369,14 +390,38 @@ def handle_disconnect():
 @socketio.on("song_ready_to_play")
 def song_ready_to_play():
     global users_ready, autoplay_mem
+<<<<<<< HEAD
+=======
+    # autoplay("/autoplay off")
+>>>>>>> 968126f36ae3c3824a5c7ad730caac5f0225cf31
     users_ready += 1
     server_response(f'Users ready: {users_ready}')
     if users_ready == total_users:
         users_ready = 0
         server_response("All users are ready...")
+<<<<<<< HEAD
         socketio.emit("all_users_ready")
         server_response("Song will play...")
         start_timer()
+=======
+        # if autoplay_mem == False:
+        #     users_ready = 0
+        #     return
+        socketio.emit("all_users_ready")
+        server_response("Song will play...")
+        start_timer()
+        # if (autoplay_mem == True):
+        #     socketio.emit("all_users_ready")
+        #     start_timer()
+        #     server_response("Song will play...")
+        #     users_ready = 0
+        #     return
+        # elif (autoplay_mem == False):
+        #     server_response("Song is ready to play...")
+        #     server_response("Autoplay is disabled...")
+        #     users_ready = 0
+        #     return
+>>>>>>> 968126f36ae3c3824a5c7ad730caac5f0225cf31
 
 @socketio.on("connect_client")
 def connect_client(username):
@@ -452,7 +497,11 @@ def chat():
         elif message == "/random":
             is_random_playing = True
             autoplay("/autoplay off")
+<<<<<<< HEAD
             # all_random("/allrandom on")
+=======
+            all_random("/allrandom on")
+>>>>>>> 968126f36ae3c3824a5c7ad730caac5f0225cf31
             server_response("Random playback started.")
             play_random_song()
             return ""
