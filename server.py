@@ -6,6 +6,10 @@ from datetime import datetime
 from pytube import YouTube
 import sys
 import os
+import random
+
+available_songs = []  # Add your available songs to this list
+is_random_playing = False
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -44,6 +48,7 @@ COMMANDS = {
         '/s user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
         '/timestamp user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
         '/ts user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
+        '/random': 'Plays random song.',
     }
 
 # Data storage
@@ -75,6 +80,18 @@ def song_pause():
 
 def song_resume():
     socketio.emit("song_resume")
+
+def play_random_song():
+    global is_random_playing
+    if is_random_playing:
+        songs = get_song_list()
+        if songs:
+            random_song = random.choice(songs)
+            socketio.emit("play_song", {"song": random_song})
+            server_response(f'Buffering random song "{random_song}"...')
+        else:
+            server_response("No songs available for random playback.")
+
 
 def play_song(message):
     try:
@@ -290,6 +307,7 @@ def generate_audio(song_path):
 @app.route('/chat', methods=['POST'])
 def chat():
     global COMMANDS
+    global is_random_playing
 
     username, message = request.form.get('message').split('|')
     command_keys = COMMANDS.keys()
@@ -298,6 +316,9 @@ def chat():
         chat_messages.append(message)
         if message == "/clear":
             clear_chat(username)
+        elif message == "/randomstop":
+            is_random_playing = False
+            server_response("Random playback stopped.")
         elif message == "/online":
             global connected_clients
             connected_clients = []
@@ -328,6 +349,11 @@ def chat():
             list_users()
         elif message.startswith('/sync ') or message.startswith('/s '):
             sync_timestamp(message)
+        elif message == "/random":
+            is_random_playing = True
+            server_response("Random playback started.")
+            play_random_song()
+            return ""
         # elif message.startswith('/sync '):
         #     sync_user(message)
             
