@@ -80,3 +80,4 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateSongList(songs) {
     const songListElement = document.getElementById("song_list");
     songListElement.innerHTML = "";
+    songs.forEach((song, index) => {
