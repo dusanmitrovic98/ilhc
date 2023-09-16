@@ -43,3 +43,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   socket.on("refresh_clients", () => {
     socket.emit("connect_client", USERNAME_ME);
+  });
