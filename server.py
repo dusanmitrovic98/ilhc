@@ -55,6 +55,9 @@ COMMANDS = {
 chat_messages = []
 connected_clients = []
 
+total_users = 0
+users_ready = 0
+
 def get_song_list():
     songs = os.listdir(MUSIC_FOLDER)
     return songs
@@ -270,15 +273,34 @@ def song_ready(data):
 
 @socketio.on("connect")
 def handle_connect():
+    global total_users
+    total_users += 1
     server_response("User connected.")
     list_all_songs()
 
 @socketio.on("disconnect")
 def handle_disconnect():
-    global connected_clients
-    connected_clients = []
+    global total_users, users_ready
+    total_users -= 1
+    if users_ready > 0:
+        users_ready -= 1
     socketio.emit("refresh_clients")
     server_response("User disconnected.")
+
+@socketio.on("song_ready_to_play")
+def song_ready_to_play():
+    global users_ready
+    users_ready += 1
+    server_response(f'Users ready: {users_ready}')
+    if users_ready == total_users:
+        server_response("All users are ready...")
+        
+        if (autoplay == True):
+            server_response("Song will play...")
+            # socketio.emit("all_users_ready")
+        elif (autoplay == False):
+            server_response("Autoplay is disabled...")
+        users_ready = 0
 
 @socketio.on("connect_client")
 def connect_client(username):

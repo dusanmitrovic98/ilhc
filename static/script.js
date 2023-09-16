@@ -111,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
               return reader.read().then(({ done, value }) => {
                 if (done) {
                   socket.emit("song_ready", { username: USERNAME_ME });
+                  socket.emit("song_ready_to_play");
                   playAudio(songBuffer);
                   return;
                 }
@@ -203,6 +204,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (username != USERNAME_ME) {
       audioPlayer.currentTime = timestamp;
     }
+  });
+
+  socket.on("all_users_ready", () => {
+    console.log("all_users_ready");
+    audioPlayer.play();
   });
 
   setTimeout(function () {
