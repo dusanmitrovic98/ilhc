@@ -42,6 +42,8 @@ COMMANDS = {
         '/autoplay on/off': 'Autoplay enabled/disabled.',
         '/sync user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
         '/s user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
+        '/timestamp user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
+        '/ts user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
     }
 
 # Data storage
@@ -159,15 +161,15 @@ def sync_timestamp(message):
     sync_timestamp_username = username
     socketio.emit("sync_timestamp", {'username': username})
 
-def sync_user(message):
-    global sync_timestamp
+def fetch_timestamp(message):
+    global sync_timestamp_username
     if len(message.split(' ')) <= 1:
             server_response("Invalid command format.")
             return
     user_number = int(message.split(' ')[1])
     username = connected_clients[user_number - 1]
-    sync_timestamp = 0
-    socketio.emit("sync_timestamp", {'username': username, 'sync': True})
+    sync_timestamp_username = username
+    socketio.emit("fetch_timestamp", {'username': username})
 
 def loop(message):
     global loop_mem
@@ -231,9 +233,12 @@ def timestamp_fetched(data):
     global sync_timestamp, sync_timestamp_username
     server_response(str(data))
     socketio.emit("sync_users", {"username": sync_timestamp_username, "timestamp": data})
-    # sync_timestamp = timestamp
-    # if sync:
-        # socketio.emit("sync_users", {'username':  username, 'timestamp': sync_timestamp})
+
+@socketio.on("timestamp_fetched")
+def timestamp_fetched(data):
+    global sync_timestamp, sync_timestamp_username
+    server_response(str(data))
+    socketio.emit("sync_users", {"username": sync_timestamp_username, "timestamp": data})
 
 @socketio.on("sync_users")
 def sync_users(timestamp):

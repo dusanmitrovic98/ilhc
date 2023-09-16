@@ -190,6 +190,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  socket.on("fetch_timestamp", (data) => {
+    timestamp = audioPlayer.currentTime;
+    if (data.username == USERNAME_ME) {
+      socket.emit("timestamp_fetched", timestamp);
+    }
+  });
+
   socket.on("sync_users", (data) => {
     username = data.username;
     timestamp = data.timestamp;
