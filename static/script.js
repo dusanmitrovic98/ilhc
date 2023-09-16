@@ -33,3 +33,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
     return `${randomAdjective} ${randomAnimal}`;
   }
+
