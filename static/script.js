@@ -14,3 +14,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const seconds = currentTime.getSeconds();
     const timeString = `${hours}:${minutes}:${seconds}`;
     return timeString;
+  }
