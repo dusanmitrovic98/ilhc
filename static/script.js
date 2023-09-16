@@ -5,3 +5,4 @@ document.addEventListener("DOMContentLoaded", () => {
   const audioPlayer = document.getElementById("audioPlayer");
   const timer = document.getElementById("timer");
 
+  let message = "";
