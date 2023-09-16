@@ -6,3 +6,4 @@ document.addEventListener("DOMContentLoaded", () => {
   const timer = document.getElementById("timer");
 
   let message = "";
+
