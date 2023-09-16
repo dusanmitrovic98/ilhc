@@ -8,3 +8,4 @@ document.addEventListener("DOMContentLoaded", () => {
   let message = "";
 
   function getCurrentTimeString() {
+    const currentTime = new Date();
