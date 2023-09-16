@@ -21,3 +21,4 @@ document.addEventListener("DOMContentLoaded", () => {
     messageDiv.className = className;
     const onlineDotClass = isOnline ? "online" : "offline";
     messageDiv.innerHTML = `<span class="online-dot ${onlineDotClass}"></span><strong>${username}:</strong> ${message}`;
+    chatBox.appendChild(messageDiv);
