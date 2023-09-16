@@ -91,3 +91,4 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.keyCode === 13) {
       sendMessageBtn.click();
     }
+  });
