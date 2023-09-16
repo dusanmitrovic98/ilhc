@@ -49,3 +49,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const blob = new Blob(songBuffer, { type: "audio/mp3" });
     const audioUrl = URL.createObjectURL(blob);
     audioPlayer.src = audioUrl;
+    audioPlayer.controls = true;
