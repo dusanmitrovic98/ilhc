@@ -22,3 +22,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const onlineDotClass = isOnline ? "online" : "offline";
     messageDiv.innerHTML = `<span class="online-dot ${onlineDotClass}"></span><strong>${username}:</strong> ${message}`;
     chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
