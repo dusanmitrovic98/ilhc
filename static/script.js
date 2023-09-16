@@ -18,3 +18,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function displayMessage(username, message, className, isOnline) {
     const messageDiv = document.createElement("div");
+    messageDiv.className = className;
