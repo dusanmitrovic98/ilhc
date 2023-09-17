@@ -45,3 +45,4 @@ document.addEventListener("DOMContentLoaded", () => {
     socket.emit("connect_client", USERNAME_ME);
   });
 
+  function playAudio(songBuffer) {
