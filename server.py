@@ -40,7 +40,7 @@ COMMANDS = {
         '/play song_number': 'Plays a specific song.',
         '/p song_number': 'Plays a specific song (shortcut).',
         '/ song_number': 'Plays a specific song (shortcut).',
-        '/download song_url': 'Downloads a song from a URL.',
+        # '/download song_url': 'Downloads a song from a URL.',
         '/rename song_number new_name.mp3': 'Renames a song.',
         '/songtime seconds': 'Sets the current time of the song.',
         '/start': 'Starts playing the song from the beginning.',
