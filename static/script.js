@@ -25,3 +25,4 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
+  function generateRandomUsername() {
