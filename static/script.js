@@ -34,3 +34,4 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${randomAdjective} ${randomAnimal}`;
   }
 
+  const USERNAME_ME = generateRandomUsername();
