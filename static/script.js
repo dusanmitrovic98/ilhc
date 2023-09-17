@@ -27,3 +27,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function generateRandomUsername() {
     const adjectives = ["Cuddly", "Fluffy", "Psycho", "Sunny", "Bubbly"];
+    const animals = ["Kitten", "Puppy", "Bunny", "Duckling", "Panda"];
