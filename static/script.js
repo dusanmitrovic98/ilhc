@@ -59,3 +59,4 @@ document.addEventListener("DOMContentLoaded", () => {
       messageInput.value = "";
 
       fetch("/chat", {
+        method: "POST",
