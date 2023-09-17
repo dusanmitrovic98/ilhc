@@ -29,3 +29,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const adjectives = ["Cuddly", "Fluffy", "Psycho", "Sunny", "Bubbly"];
     const animals = ["Kitten", "Puppy", "Bunny", "Duckling", "Panda"];
     const randomAdjective =
+      adjectives[Math.floor(Math.random() * adjectives.length)];
