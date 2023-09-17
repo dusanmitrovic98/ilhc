@@ -23,3 +23,4 @@ document.addEventListener("DOMContentLoaded", () => {
     messageDiv.innerHTML = `<span class="online-dot ${onlineDotClass}"></span><strong>${username}:</strong> ${message}`;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
+  }
