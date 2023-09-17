@@ -7,3 +7,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let message = "";
 
+  function getCurrentTimeString() {
