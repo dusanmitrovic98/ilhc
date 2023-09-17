@@ -63,3 +63,4 @@ document.addEventListener("DOMContentLoaded", () => {
         body: `message=${encodeURIComponent(USERNAME_ME + "|" + message)}`,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
+        },
