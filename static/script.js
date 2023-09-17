@@ -38,3 +38,4 @@ document.addEventListener("DOMContentLoaded", () => {
   const onlineUsers = {};
   onlineUsers[USERNAME_ME] = true;
 
+  const socket = io.connect();
