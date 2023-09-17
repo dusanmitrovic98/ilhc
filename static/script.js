@@ -71,3 +71,4 @@ document.addEventListener("DOMContentLoaded", () => {
             displayMessage("Server", responseText, "server-message");
           }
         })
+        .catch((error) => {
