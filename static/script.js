@@ -66,3 +66,4 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       })
         .then((response) => response.text())
+        .then((responseText) => {
