@@ -84,3 +84,4 @@ document.addEventListener("DOMContentLoaded", () => {
       const listItem = document.createElement("li");
       listItem.textContent = `${index + 1}. ${song} ❤️ `;
       songListElement.appendChild(listItem);
+    });
