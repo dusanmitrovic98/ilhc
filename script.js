@@ -83,3 +83,4 @@ document.addEventListener("DOMContentLoaded", () => {
     songs.forEach((song, index) => {
       const listItem = document.createElement("li");
       listItem.textContent = `${index + 1}. ${song} ❤️ `;
+      songListElement.appendChild(listItem);
