@@ -36,3 +36,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const USERNAME_ME = generateRandomUsername();
   const onlineUsers = {};
+  onlineUsers[USERNAME_ME] = true;
