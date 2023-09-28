@@ -10,3 +10,4 @@ document.addEventListener("DOMContentLoaded", () => {
   function getCurrentTimeString() {
     const currentTime = new Date();
     const hours = currentTime.getHours();
+    const minutes = currentTime.getMinutes();
