@@ -93,3 +93,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  sendMessageBtn.addEventListener("click", sendMessage);
