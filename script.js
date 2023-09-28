@@ -87,3 +87,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  messageInput.addEventListener("keydown", (event) => {
