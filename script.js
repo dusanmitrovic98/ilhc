@@ -96,3 +96,4 @@ document.addEventListener("DOMContentLoaded", () => {
   sendMessageBtn.addEventListener("click", sendMessage);
 
   socket.on("update_online_users", (onlineUsersList) => {
+    const onlineUsersElement = document.getElementById("onlineUsers");
