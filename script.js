@@ -52,3 +52,4 @@ document.addEventListener("DOMContentLoaded", () => {
     audioPlayer.controls = true;
   }
 
+  function sendMessage() {
