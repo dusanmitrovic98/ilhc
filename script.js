@@ -16,3 +16,4 @@ document.addEventListener("DOMContentLoaded", () => {
     return timeString;
   }
 
+  function displayMessage(username, message, className, isOnline) {
