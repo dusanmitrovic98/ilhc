@@ -24,3 +24,4 @@ document.addEventListener("DOMContentLoaded", () => {
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
   }
+
