@@ -57,3 +57,4 @@ document.addEventListener("DOMContentLoaded", () => {
     if (message.trim() !== "") {
       displayMessage(USERNAME_ME, message, "message");
       messageInput.value = "";
+
