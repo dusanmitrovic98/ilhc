@@ -46,3 +46,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function playAudio(songBuffer) {
+    const blob = new Blob(songBuffer, { type: "audio/mp3" });
