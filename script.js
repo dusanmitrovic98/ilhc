@@ -72,3 +72,4 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         })
         .catch((error) => {
+          console.error("Error sending message:", error);
