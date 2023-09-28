@@ -41,3 +41,4 @@ document.addEventListener("DOMContentLoaded", () => {
   const socket = io.connect();
   socket.emit("connect_client", USERNAME_ME);
 
+  socket.on("refresh_clients", () => {
