@@ -58,3 +58,4 @@ document.addEventListener("DOMContentLoaded", () => {
       displayMessage(USERNAME_ME, message, "message");
       messageInput.value = "";
 
+      fetch("/chat", {
