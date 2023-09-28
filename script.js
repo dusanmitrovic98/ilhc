@@ -75,3 +75,4 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error("Error sending message:", error);
         });
     }
+  }
