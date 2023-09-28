@@ -97,3 +97,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   socket.on("update_online_users", (onlineUsersList) => {
     const onlineUsersElement = document.getElementById("onlineUsers");
+    onlineUsersElement.innerHTML = "Online: " + onlineUsersList.message;
