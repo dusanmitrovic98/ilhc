@@ -60,3 +60,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
       fetch("/chat", {
         method: "POST",
+        body: `message=${encodeURIComponent(USERNAME_ME + "|" + message)}`,
