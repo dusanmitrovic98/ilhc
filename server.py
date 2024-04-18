@@ -33,3 +33,4 @@ sync_timestamp_username = ""
 # Constants
 NAME_SERVER = "Server"
 MUSIC_FOLDER = "music"
+COMMANDS = {
