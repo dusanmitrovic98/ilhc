@@ -75,3 +75,4 @@ def countdown_timer(seconds):
         time.sleep(1)
     
     timer_time = 0
+    if allrandom:
