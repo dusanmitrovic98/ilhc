@@ -46,3 +46,4 @@ COMMANDS = {
         '/start': 'Starts playing the song from the beginning.',
         '/pause': 'Pauses the currently playing song.',
         '/resume': 'Resumes the paused song.',
+        '/clear': 'Clears the chat.',
