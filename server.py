@@ -55,3 +55,4 @@ COMMANDS = {
         '/timestamp user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
         '/ts user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
         '/random': 'Plays random song. If allrandom is enabled it will continue to play new random songs each time song is finished.',
+    }
