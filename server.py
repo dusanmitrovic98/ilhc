@@ -35,3 +35,4 @@ NAME_SERVER = "Server"
 MUSIC_FOLDER = "music"
 COMMANDS = {
         '/users': 'Lists all online users and their numbers.',
+        '/online': 'Refreshes online users display.',
