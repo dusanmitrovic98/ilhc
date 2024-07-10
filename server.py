@@ -78,3 +78,4 @@ def countdown_timer(seconds):
     if allrandom:
         play_random_song()
     socketio.emit("update_timer", {'seconds': timer_time})
+    print("Countdown finished!")
