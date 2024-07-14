@@ -49,3 +49,4 @@ COMMANDS = {
         '/clear': 'Clears the chat.',
         '/loop on/off': 'Looping enabled/disabled.',
         '/autoplay on/off': 'Autoplay enabled/disabled.',
+        '/allrandom on/off': 'Allrandom enabled/disabled.',
