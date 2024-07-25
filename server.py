@@ -69,3 +69,4 @@ def countdown_timer(seconds):
     global timer_time, allrandom
     timer_time = 0
     for i in range(int(seconds), 0, -1):
+        timer_time = i
