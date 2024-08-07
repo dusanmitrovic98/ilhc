@@ -11,3 +11,4 @@ import sys
 import os
 import random
 
+available_songs = []  # Add your available songs to this list
