@@ -73,3 +73,4 @@ def countdown_timer(seconds):
         socketio.emit("update_timer", {'seconds': timer_time})
         print(f"Countdown: {timer_time} seconds remaining")
         time.sleep(1)
+    
