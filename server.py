@@ -50,3 +50,4 @@ COMMANDS = {
         '/loop on/off': 'Looping enabled/disabled.',
         '/autoplay on/off': 'Autoplay enabled/disabled.',
         '/allrandom on/off': 'Allrandom enabled/disabled.',
+        '/sync user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
