@@ -40,3 +40,4 @@ COMMANDS = {
         '/play song_number': 'Plays a specific song.',
         '/p song_number': 'Plays a specific song (shortcut).',
         '/ song_number': 'Plays a specific song (shortcut).',
+        # '/download song_url': 'Downloads a song from a URL.',
