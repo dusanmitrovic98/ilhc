@@ -80,3 +80,4 @@ def countdown_timer(seconds):
     socketio.emit("update_timer", {'seconds': timer_time})
     print("Countdown finished!")
 
+def get_audio_duration(file_path):
