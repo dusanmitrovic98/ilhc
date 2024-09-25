@@ -82,3 +82,4 @@ def countdown_timer(seconds):
 
 def get_audio_duration(file_path):
     try:
+        audio_file = AudioFileClip(file_path)
