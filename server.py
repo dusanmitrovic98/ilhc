@@ -85,3 +85,4 @@ def get_audio_duration(file_path):
         audio_file = AudioFileClip(file_path)
 
         # Get the duration in seconds
+        duration_seconds = audio_file.duration
