@@ -48,3 +48,4 @@ COMMANDS = {
         '/resume': 'Resumes the paused song.',
         '/clear': 'Clears the chat.',
         '/loop on/off': 'Looping enabled/disabled.',
+        '/autoplay on/off': 'Autoplay enabled/disabled.',
