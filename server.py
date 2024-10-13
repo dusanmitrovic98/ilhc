@@ -20,3 +20,4 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 # MongoClient
+client = MongoClient("mongodb://localhost:27017/")
