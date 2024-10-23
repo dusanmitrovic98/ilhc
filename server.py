@@ -34,3 +34,4 @@ sync_timestamp_username = ""
 NAME_SERVER = "Server"
 MUSIC_FOLDER = "music"
 COMMANDS = {
+        '/users': 'Lists all online users and their numbers.',
