@@ -39,3 +39,4 @@ COMMANDS = {
         '/list': 'Lists all songs.',
         '/play song_number': 'Plays a specific song.',
         '/p song_number': 'Plays a specific song (shortcut).',
+        '/ song_number': 'Plays a specific song (shortcut).',
