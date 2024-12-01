@@ -94,3 +94,4 @@ def get_audio_duration(file_path):
         print(f"Error: {e}")
     return None
 
+def start_timer():
