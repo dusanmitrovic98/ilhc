@@ -45,3 +45,4 @@ COMMANDS = {
         '/songtime seconds': 'Sets the current time of the song.',
         '/start': 'Starts playing the song from the beginning.',
         '/pause': 'Pauses the currently playing song.',
+        '/resume': 'Resumes the paused song.',
