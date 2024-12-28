@@ -43,3 +43,4 @@ COMMANDS = {
         # '/download song_url': 'Downloads a song from a URL.',
         '/rename song_number new_name.mp3': 'Renames a song.',
         '/songtime seconds': 'Sets the current time of the song.',
+        '/start': 'Starts playing the song from the beginning.',
