@@ -25,3 +25,4 @@ db = client['ilhchat']
 collection_messages = db["messages"]
 
 # Flags
+autoplay_mem = False
