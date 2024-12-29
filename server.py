@@ -22,3 +22,4 @@ socketio = SocketIO(app)
 # MongoClient
 client = MongoClient("mongodb://localhost:27017/")
 db = client['ilhchat'] 
+collection_messages = db["messages"]
