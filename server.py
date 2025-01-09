@@ -70,3 +70,4 @@ def countdown_timer(seconds):
     timer_time = 0
     for i in range(int(seconds), 0, -1):
         timer_time = i
+        socketio.emit("update_timer", {'seconds': timer_time})
