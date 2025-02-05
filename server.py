@@ -91,3 +91,4 @@ def get_audio_duration(file_path):
 
         return duration_seconds
     except Exception as e:
+        print(f"Error: {e}")
