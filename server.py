@@ -58,3 +58,4 @@ COMMANDS = {
     }
 
 # Data storage
+chat_messages = []
