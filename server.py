@@ -26,3 +26,4 @@ collection_messages = db["messages"]
 
 # Flags
 autoplay_mem = False
+loop_mem = False
