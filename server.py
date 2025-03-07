@@ -16,3 +16,4 @@ is_random_playing = False
 allrandom = True
 song_path = "C:/Users/BK2O198/Documents/Workstation/ilhchat/music/sia_snowman.mp3"
 
+app = Flask(__name__)
