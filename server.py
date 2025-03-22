@@ -95,3 +95,4 @@ def get_audio_duration(file_path):
     return None
 
 def start_timer():
+    global current_song_index, allrandom, song_path
