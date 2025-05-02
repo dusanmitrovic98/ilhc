@@ -60,3 +60,4 @@ COMMANDS = {
 # Data storage
 chat_messages = []
 connected_clients = []
+
