@@ -90,3 +90,4 @@ def get_audio_duration(file_path):
         print(f"The duration of the song is {duration_seconds} seconds.")
 
         return duration_seconds
+    except Exception as e:
