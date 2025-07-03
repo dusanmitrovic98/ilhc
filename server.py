@@ -52,3 +52,5 @@ COMMANDS = {
         '/allrandom on/off': 'Allrandom enabled/disabled.',
         '/sync user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
         '/s user_number': 'Syncs with the timestamp of the user under. Order "/online"... "/users"... "/sync users_number"',
+        '/timestamp user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
+        '/ts user_number': 'Fetches user timestamp. Order "/online"... "/users"... "/timestamp users_number"',
