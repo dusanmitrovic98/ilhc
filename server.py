@@ -14,3 +14,4 @@ import random
 available_songs = []  # Add your available songs to this list
 is_random_playing = False
 allrandom = True
+song_path = "C:/Users/BK2O198/Documents/Workstation/ilhchat/music/sia_snowman.mp3"
