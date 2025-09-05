@@ -7,3 +7,4 @@ from pymongo import MongoClient
 from datetime import datetime
 from moviepy.editor import AudioFileClip
 from pytube import YouTube
+import sys
