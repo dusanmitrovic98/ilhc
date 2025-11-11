@@ -87,3 +87,4 @@ def get_audio_duration(file_path):
         # Get the duration in seconds
         duration_seconds = audio_file.duration
 
+        print(f"The duration of the song is {duration_seconds} seconds.")
