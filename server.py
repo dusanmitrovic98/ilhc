@@ -66,3 +66,4 @@ users_ready = 0
 timer_time = 0
 
 def countdown_timer(seconds):
+    global timer_time, allrandom
