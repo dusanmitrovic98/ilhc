@@ -37,3 +37,4 @@ COMMANDS = {
         '/users': 'Lists all online users and their numbers.',
         '/online': 'Refreshes online users display.',
         '/list': 'Lists all songs.',
+        '/play song_number': 'Plays a specific song.',
