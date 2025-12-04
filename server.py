@@ -41,3 +41,4 @@ COMMANDS = {
         '/p song_number': 'Plays a specific song (shortcut).',
         '/ song_number': 'Plays a specific song (shortcut).',
         # '/download song_url': 'Downloads a song from a URL.',
+        '/rename song_number new_name.mp3': 'Renames a song.',
