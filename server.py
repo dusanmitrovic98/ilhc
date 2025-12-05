@@ -76,3 +76,4 @@ def countdown_timer(seconds):
     
     timer_time = 0
     if allrandom:
+        play_random_song()
