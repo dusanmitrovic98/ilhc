@@ -62,3 +62,4 @@ chat_messages = []
 connected_clients = []
 
 total_users = 0
+users_ready = 0
