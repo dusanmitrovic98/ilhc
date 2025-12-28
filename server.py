@@ -74,3 +74,4 @@ def countdown_timer(seconds):
         print(f"Countdown: {timer_time} seconds remaining")
         time.sleep(1)
     
+    timer_time = 0
